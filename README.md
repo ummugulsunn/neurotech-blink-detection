@@ -1,10 +1,10 @@
-# Arduino ile EEG Tabanlı Göz Kırpması Algılama
+# Blink Detection with Arduino + EEG
 
-Arduino + EEG modülü ve serial üzerinden göz kırpması algılayan örnek proje.
+Example project that detects eye blinks using an Arduino and an EEG module over serial.
 
-## Donanım Gereksinimi
+## Hardware Requirements
 - Arduino Uno
-- EEG modülü
+- EEG module
 
-## Kullanım
-- Arduino kodlarını `src` dizininde bul.
+## Usage
+- See the Arduino code under the `src` directory.

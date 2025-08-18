@@ -1,0 +1,4 @@
+*.ino.hex
+*.bin
+build/
+.DS_Store

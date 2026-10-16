@@ -1,6 +1,7 @@
 """Load recordings written by acquisition/logger.py."""
 from __future__ import annotations
 
+import csv
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -33,13 +34,14 @@ def board_time_to_seconds(board_time_us: np.ndarray) -> np.ndarray:
 
 def load_recording(path: str | Path) -> Recording:
     path = Path(path)
-    data = np.genfromtxt(path, delimiter=",", comments="#", names=True, dtype=None, encoding="ascii")
-    t = board_time_to_seconds(np.asarray(data["board_time_us"]))
+    with path.open(newline="") as f:
+        rows = list(csv.DictReader(line for line in f if not line.startswith("#")))
+    t = board_time_to_seconds(np.array([int(r["board_time_us"]) for r in rows], dtype=np.int64))
     fs = 1.0 / float(np.median(np.diff(t)))
     return Recording(
         t=t,
-        value=np.asarray(data["value"], dtype=float),
-        cue=np.asarray(data["cue"]).astype(bool),
+        value=np.array([float(r["value"]) for r in rows]),
+        cue=np.array([r["cue"] == "1" for r in rows]),
         fs=fs,
         name=path.stem,
     )
